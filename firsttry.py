@@ -27,6 +27,22 @@ Please deliver your solution as a link to a Git repository or a tarball
 of that repository.  Try to commit often.
 '''
 
+def find_path(master_key, subarray, original, so_far):
+    #print("###################")
+    #print(master_key)
+    for i in subarray:
+        try:
+            if not i in so_far:
+                so_far.append(i)
+                find_path(i, dataset[i], original, so_far)
+            else:
+                print("$$$$$$$$$$")
+                so_far.append(i)
+                print(so_far)
+                return
+        except KeyError:
+            so_far.remove(i)
+            continue
 dataset ={
         "foo": ["bar", "baz"],
         "orange": ["bnanana", "mango"],
@@ -36,3 +52,11 @@ dataset ={
         "baz": [],
         "quux": ["bar", "banana"]
 }
+solutions = []
+for master_key in dataset.keys():
+    try:
+        subarray = dataset[master_key]
+    except:
+        raise
+    find_path(master_key, subarray,master_key, [])
+    #exit()
