@@ -9,6 +9,7 @@ dataset ={
         "quux": ["bar", "banana"]
 }
 from numpy import roll
+import functools
 almost_solved = []
 
 def recursive_find(key):
@@ -26,16 +27,17 @@ def recursive_find(key):
 for key in dataset.keys():
     recursive_find(key)
 
-the_solutions = []
-'''
+intermediate_solution = []
 for solution in almost_solved:
-    to_compare = solution
-    for solution in almost_solved:
-        if to_compare == solution:
-            continue
-        else:
-            for i in range(len(solution)):
-                rotated = roll(solution, 1)
-                print(rotated)
-'''
-print(almost_solved)
+    intermediate_solution.append(set(solution))
+solutions = []
+while len(intermediate_solution)> 0:
+    st = intermediate_solution.pop()
+    if list(st) not in solutions:
+        solutions.append(list(st))
+
+#print(solutions)
+
+final = []
+for solution in solutions:
+    print(*solution, solution[0])
