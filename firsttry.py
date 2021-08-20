@@ -7,9 +7,11 @@ dataset ={
         "monkey": ["cow", "parrot"],
         "banana": ["mango"],
         "mango": ["banana"],
-        "baz": [],
+        "baz": ["monkey"],
+        "cow": ["baz"],
         "quux": ["bar", "banana"]
 }
+
 
 graph = networkx.DiGraph(dataset)
 
