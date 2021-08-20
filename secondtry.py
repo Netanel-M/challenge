@@ -4,26 +4,31 @@ dataset ={
         "bar": ["qux", "quux"],
         "monkey": ["cow", "parrot"],
         "banana": ["mango"],
-        "mango": ["banana"],
-        "baz": [],
+        "mango": ["banana", "foo"],
+        "baz": ["mango"],
         "quux": ["bar", "banana"]
 }
 almost_solved = []
+list_of_lists = []
 
-def recursive_find(key):
+def recursive_find(key, so_far):
     global almost_solved
+    #print(so_far)
+    #print(key)
     for sub_key in dataset[key]:
         try:
-            if (key == sub_key) or (key in dataset[sub_key]) or (sub_key in dataset[sub_key]):
-                for index, name in enumerate(dataset[sub_key]):
-                    if name == key or name == sub_key:
-                        cycle_index = index
-                almost_solved.append([key, sub_key, dataset[sub_key][cycle_index]])
-            return recursive_find(dataset[sub_key])
-        except:
+            if sub_key in so_far:
+                so_far.append(sub_key)
+                almost_solved.append(so_far)
+
+                return
+            so_far.append(sub_key)
+            return recursive_find(sub_key, so_far)
+        except KeyError as e:
+            so_far.pop(-1)
             continue
 for key in dataset.keys():
-    recursive_find(key)
+    recursive_find(key, [key])
 
 intermediate_solution = []
 for solution in almost_solved:
