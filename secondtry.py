@@ -33,7 +33,7 @@ solutions = []
 
 while len(intermediate_solution)> 0:
     st = intermediate_solution.pop()
-    if list(st) not in solutions:
+    if sorted(list(st)) not in [sorted(solution) for solution in solutions]:
         solutions.append(list(st))
 
 final = []
