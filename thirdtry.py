@@ -13,14 +13,12 @@ list_of_lists = []
 
 def recursive_find(key, so_far):
     global almost_solved
-    #print(so_far)
-    #print(key)
+    print(so_far)
     for sub_key in dataset[key]:
         try:
             if sub_key in so_far:
                 so_far.append(sub_key)
                 almost_solved.append(so_far)
-
                 return
             so_far.append(sub_key)
             return recursive_find(sub_key, so_far)
