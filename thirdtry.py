@@ -14,8 +14,9 @@ dataset ={
         "quux": ["bar"],
         "spam": ["rolls", "eggs"],
         "eggs": ["rolls"],
-        "fam": [],
-        "rolls": ["fam","eggs"]
+        "fam": ["eggs"],
+        "ham": [],
+        "rolls": ["fam","ham", "eggs"]
 }
 
 # where initially I will put possible matches
@@ -24,8 +25,10 @@ almost_solved = []
 def recursive_find(key, so_far):
     # takes a key and a list of the current history of the path
     global almost_solved # simplify things a bit. Should've wrapped it in an object to avoid global variables maybe
-    
-    for sub_key in dataset[key]:
+    while len(dataset[key]) > 0:
+    #for sub_key in dataset[key]:
+        sub_key = dataset[key][0]
+        #print(sub_key)
         try:
             #print( [)
             if len(so_far) >  0 and so_far[0] == sub_key:
@@ -34,12 +37,16 @@ def recursive_find(key, so_far):
                 so_far.append(sub_key)
                 # and add it to possible solutions
                 almost_solved.append(so_far)
-                return
+                dataset[key].remove(sub_key)
+                continue
             try:
                 # need this to make sure we're not going to go into an empty key
                 if len(dataset[sub_key]) == 0:
+                    dataset[key].remove(sub_key)
                     continue
             except KeyError:
+                dataset[key].remove(sub_key)
+
                 pass
             # if it's not a cycle add the key to the history
             so_far.append(sub_key)
