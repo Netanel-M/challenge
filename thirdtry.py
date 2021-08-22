@@ -2,7 +2,7 @@
 import sys
 sys.setrecursionlimit(2000)
 # Modified dataset for increased testing
-dataset ={
+master_dataset ={
         "foo": ["bar", "baz"],
         "orange": ["bnanana", "mango"],
         "bar": ["qux", "quux"],
@@ -22,9 +22,8 @@ dataset ={
 # where initially I will put possible matches
 almost_solved = []
 
-def recursive_find(key, so_far):
+def recursive_find(key, so_far, dataset):
     # takes a key and a list of the current history of the path
-    global almost_solved # simplify things a bit. Should've wrapped it in an object to avoid global variables maybe
     while len(dataset[key]) > 0:
     #for sub_key in dataset[key]:
         sub_key = dataset[key][0]
@@ -51,16 +50,17 @@ def recursive_find(key, so_far):
             # if it's not a cycle add the key to the history
             so_far.append(sub_key)
             # If you haven't hit the base case recurse on
-            return recursive_find(sub_key, so_far)
+            return recursive_find(sub_key, so_far, dataset)
         except KeyError as e:
             # Non existent index, rmeove it from path and continue to the next iteration
             so_far.pop(-1)
             continue
 
 
-for key in dataset.keys():
+for key in master_dataset.keys():
     # this runs the above function on every key in the dataset
-    recursive_find(key, [])
+    #print(dataset)
+    recursive_find(key, [], master_dataset)
 
 intermediate_solution = []
 for solution in almost_solved:
