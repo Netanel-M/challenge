@@ -33,19 +33,14 @@ def recursive_find(key, so_far, dataset):
             #print( [)
             #if len(so_far) >  0 and so_far[0] == sub_key:
             if len(so_far) >  0 and [i for i in so_far if i == sub_key] == [sub_key]: # solves another infinite recursion bug
-                print(so_far)
+                #print(so_far)
                 # if the current key is equal to the first item in the history append it to history
                 so_far.append(sub_key)
                 # and add it to possible solutions
                 almost_solved.append(so_far)
                 dataset[key].remove(sub_key)
-
-                # What happens if an array has two values to lead to a similar path? for now I discard these
-                counts = Counter(so_far)
-                for count in counts.values():
-                    if count > 2:
-                        return
-
+                # if I reset the so_far list, we can safely continue searching!
+                so_far = []
                 continue
             try:
                 # need this to make sure we're not going to go into an empty key
