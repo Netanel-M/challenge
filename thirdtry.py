@@ -1,4 +1,4 @@
-
+from collections import Counter
 import sys
 sys.setrecursionlimit(2000)
 # Modified dataset for increased testing
@@ -14,7 +14,7 @@ master_dataset ={
         "quux": ["bar"],
         "spam": ["rolls", "eggs"],
         "eggs": ["rolls"],
-        "fam": ["eggs"],
+        "fam": ["eggs", "cow"],
         "ham": [],
         "rolls": ["fam","ham", "eggs"]
 }
@@ -23,6 +23,7 @@ master_dataset ={
 almost_solved = []
 
 def recursive_find(key, so_far, dataset):
+    #print(key)
     # takes a key and a list of the current history of the path
     while len(dataset[key]) > 0:
     #for sub_key in dataset[key]:
@@ -30,13 +31,21 @@ def recursive_find(key, so_far, dataset):
         #print(sub_key)
         try:
             #print( [)
-            if len(so_far) >  0 and so_far[0] == sub_key:
-            #if len(so_far) >  0 and [i for i in so_far if i == sub_key] == [sub_key]: # Also an option?
+            #if len(so_far) >  0 and so_far[0] == sub_key:
+            if len(so_far) >  0 and [i for i in so_far if i == sub_key] == [sub_key]: # solves another infinite recursion bug
+                print(so_far)
                 # if the current key is equal to the first item in the history append it to history
                 so_far.append(sub_key)
                 # and add it to possible solutions
                 almost_solved.append(so_far)
                 dataset[key].remove(sub_key)
+
+                # What happens if an array has two values to lead to a similar path? for now I discard these
+                counts = Counter(so_far)
+                for count in counts.values():
+                    if count > 2:
+                        return
+
                 continue
             try:
                 # need this to make sure we're not going to go into an empty key
@@ -59,7 +68,6 @@ def recursive_find(key, so_far, dataset):
 
 for key in master_dataset.keys():
     # this runs the above function on every key in the dataset
-    #print(dataset)
     recursive_find(key, [], master_dataset)
 
 intermediate_solution = []
